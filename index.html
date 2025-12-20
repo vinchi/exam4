@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자위소방대 조직도(응급구조포함)</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        body {
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .page {
+            width: 297mm; /* A4 가로 */
+            min-height: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 20px 30px; /* 좌우 여백 조정 */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            border: 3px solid #000;
+            padding: 8px 30px;
+            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background-color: #eee;
+        }
+
+        /* 공통 박스 스타일 */
+        .box {
+            border: 2px solid #000;
+            width: 300px;
+            text-align: center;
+            background: #fff;
+            margin-bottom: 0;
+        }
+
+        .box-header {
+            background-color: #1565C0;
+            color: #fff;
+            padding: 6px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .row {
+            display: flex;
+            border-bottom: 1px solid #000;
+            align-items: stretch;
+        }
+        .row:last-child { border-bottom: none; }
+
+        .label {
+            width: 30%;
+            background-color: #e0e0e0;
+            padding: 6px 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #000;
+            font-weight: bold;
+        }
+
+        .input {
+            width: 70%;
+            padding: 6px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #000;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 연결선 */
+        .line-vertical { width: 3px; height: 20px; background-color: #000; }
+        
+        .line-horizontal-container {
+            display: flex;
+            justify-content: space-between;
+            width: 98%; 
+            position: relative;
+            margin-bottom: 0;
+        }
+        
+        .line-horizontal-bar {
+            position: absolute;
+            top: 0;
+            left: 8%; right: 8%; /* 6개 팀이라 바 길이 조정 */
+            height: 3px;
+            background-color: #000;
+        }
+
+        .line-connector { width: 3px; height: 20px; background-color: #000; }
+
+        /* 팀 박스 컨테이너 (6개 배치용) */
+        .teams-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 5px; /* 간격을 좁힘 */
+        }
+
+        .team-box {
+            border: 2px solid #000;
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-header {
+            background-color: #444;
+            color: #fff;
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 15px; /* 글자 크기 약간 축소 */
+            border-bottom: 2px solid #000;
+            word-break: keep-all; /* 단어 짤림 방지 */
+        }
+
+        .sub-header {
+            background-color: #ddd;
+            font-size: 12px;
+            font-weight: 800;
+            text-align: center;
+            padding: 3px 0;
+            border-bottom: 1px solid #000;
+        }
+
+        .team-row {
+            display: flex;
+            border-bottom: 1px solid #888;
+        }
+        
+        .team-label { 
+            width: 30px; 
+            background: #f0f0f0; 
+            text-align: center; 
+            border-right: 1px solid #888; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center;
+            color: #000;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .team-input { 
+            flex: 1; 
+            padding: 4px 2px; 
+            color:#000; 
+            text-align: center;
+            font-size: 14px; 
+            font-weight: 800;
+        }
+
+        .duty-box {
+            background-color: #fff;
+            padding: 4px;
+            font-size: 11px;
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+            border-top: 2px solid #000;
+            margin-top: auto;
+            line-height: 1.3;
+            word-break: keep-all;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            @page { size: A4 landscape; margin: 5mm; } 
+            .page { box-shadow: none; margin: 0; width: 100%; height: 100%; }
+        }
+
+        /* 반응형 스타일 */
+        @media screen and (max-width: 1100px) {
+            .page {
+                width: 100%;
+                min-height: auto;
+                padding: 15px;
+            }
+            
+            .teams-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .team-box {
+                flex: 0 0 48%; /* 2열 배치 */
+                min-width: 250px;
+            }
+
+            /* 모바일에서는 복잡한 연결선 숨김 */
+            .line-horizontal-container, 
+            .line-horizontal-bar,
+            .line-connector {
+                display: none;
+            }
+            
+            /* 대신 간단한 세로 연결선만 유지 (부대장 아래) */
+            .line-vertical:last-of-type {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .team-box {
+                flex: 0 0 100%; /* 1열 배치 */
+            }
+            
+            .box {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h1>자위소방대 편성표</h1>
+
+        <div class="box">
+            <div class="box-header">자위소방대장</div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="label">성 명</div>
+                    <div class="input">한종현</div>
+                </div>
+                <div class="row">
+                    <div class="label">연락처</div>
+                    <div class="input">010-5678-0019</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-vertical"></div>
+
+        <div class="box">
+            <div class="box-header">부 대 장</div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="label">성 명</div>
+                    <div class="input">전민수</div>
+                </div>
+                <div class="row">
+                    <div class="label">연락처</div>
+                    <div class="input">010-5672-4581</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line-vertical"></div>
+
+        <div class="line-horizontal-container">
+            <div class="line-horizontal-bar"></div>
+            <div class="line-connector" style="margin-left: 8%"></div> <div class="line-connector"></div> <div class="line-connector"></div> <div class="line-connector"></div> <div class="line-connector"></div> <div class="line-connector" style="margin-right: 8%"></div> </div>
+
+        <div class="teams-container">
+            
+            <div class="team-box">
+                <div class="team-header" style="background-color: #546E7A;">지휘반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">전민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-5672-4581</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    수신반 확인<br>방송/지휘
+                </div>
+            </div>
+
+            <div class="team-box">
+                <div class="team-header" style="background-color: #FB8C00;">비상연락반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">이희숙</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-5573-2911</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    119 신고<br>상황 전파
+                </div>
+            </div>
+
+            <div class="team-box">
+                <div class="team-header" style="background-color: #1E88E5;">초기소화반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김지민</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-6622-4323</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    소화기 사용<br>소화전 전개
+                </div>
+            </div>
+
+            <div class="team-box">
+                <div class="team-header" style="background-color: #43A047;">피난유도반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">최병득</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-6693-9927</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    비상계단유도<br>인명대피
+                </div>
+            </div>
+
+            <div class="team-box">
+                <div class="team-header" style="background-color: #D32F2F;">응급구조반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김간호</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    응급처치<br>환자이송
+                </div>
+            </div>
+
+            <div class="team-box">
+                <div class="team-header" style="background-color: #6D4C41;">방호안전반</div>
+                
+                <div class="sub-header">반장</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">최창열</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-3457-1501</div>
+                </div>
+
+                <div class="sub-header">대원</div>
+                <div class="team-row">
+                    <div class="team-label">이름</div>
+                    <div class="team-input">김민수</div>
+                </div>
+                <div class="team-row">
+                    <div class="team-label">번호</div>
+                    <div class="team-input">010-1234-5678</div>
+                </div>
+
+                <div class="duty-box">
+                    가스/전기차단<br>시설물통제
+                </div>
+            </div>
+
+        </div>
+        
+        <div style="margin-top:15px; font-size: 13px; font-weight: bold; color: #000;">
+            ※ 응급구조반은 심폐소생술(CPR) 가능자 또는 보건 담당자로 편성합니다.
+        </div>
+    </div>
+</body>
+</html>
